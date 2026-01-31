@@ -9,8 +9,13 @@ public class Enemy : Characters
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
-        
+        switch (state)
+        {
+            case CharState.Walk:
+                WalkUpdate();
+                break;
+        }
     }
 }
