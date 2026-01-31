@@ -25,6 +25,10 @@ public class LeftClick : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            ClearEverything();
+        }
         if (Input.GetMouseButtonUp(0))
         {
             TrySelect(Input.mousePosition);
@@ -35,6 +39,10 @@ public class LeftClick : MonoBehaviour
     {
         curChar = hit.collider.GetComponent<Characters>();
         Debug.Log("Selected Char : "+ hit.collider.gameObject);
+        if (curChar != null)
+        {
+            curChar.ToggleRingSelection(true);
+        }
     }
 
     private void TrySelect(Vector2 screenPos)
@@ -52,5 +60,19 @@ public class LeftClick : MonoBehaviour
                     break;
             }
         }
+    }
+
+    private void ClearRingSelection()
+    {
+        if (curChar != null)
+        {
+            curChar.ToggleRingSelection(false);
+        }
+    }
+
+    private void ClearEverything()
+    {
+        ClearRingSelection();
+        curChar = null;
     }
 }

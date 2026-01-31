@@ -180,6 +180,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e196f01d1ded653499326d502f8a93f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RightClick
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &317305756
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -839,9 +842,9 @@ GameObject:
   - component: {fileID: 1022317868}
   - component: {fileID: 1022317867}
   - component: {fileID: 1022317866}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Terrain
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647

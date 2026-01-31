@@ -15,6 +15,12 @@ public abstract class Characters : MonoBehaviour
 {
     protected NavMeshAgent navAgent;
     protected Animator anim;
+    [SerializeField]
+    protected GameObject ringSelection;
+    public GameObject RingSelection
+    {
+        get { return ringSelection; }
+    }
     public Animator Anim { get { return anim; } }
 
     [SerializeField] protected CharState state;
@@ -27,7 +33,10 @@ public abstract class Characters : MonoBehaviour
         
     }
 
-    
+    public void ToggleRingSelection(bool flag)
+    {
+        ringSelection.SetActive(flag);
+    }
 
     public void SetState(CharState s)
     {
