@@ -469,7 +469,7 @@ GameObject:
   - component: {fileID: 3451049187733154606}
   m_Layer: 6
   m_Name: Character_Goblin_Warrior_Male
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -599,6 +599,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   ringSelection: {fileID: 2575070696911255891}
+  curHP: 10
+  curCharTarget: {fileID: 0}
+  attackRange: 2
+  attackCoolDown: 2
+  attackTimer: 0
   state: 0
 --- !u!1 &114958
 GameObject:

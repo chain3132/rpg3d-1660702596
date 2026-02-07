@@ -48,6 +48,20 @@ public class RightClick : MonoBehaviour
         CreateVFX(hit.point,VFXManager.instance.DoubleRingMarker);
     }
 
+    private void CommandToAttack(RaycastHit hit, Characters c)
+    {
+        if (c == null)
+        {
+            return;
+        }
+
+        Characters target = hit.collider.GetComponent<Characters>();
+        Debug.Log("Attack: " + target);
+        if (target != null)
+        {
+            c.ToAttackCharacter(target);
+        }
+    }
     private void TryCommand(Vector2 screenPos)
     {
         Ray ray = cam.ScreenPointToRay(screenPos);
@@ -59,7 +73,12 @@ public class RightClick : MonoBehaviour
                 case "Ground":
                     CommandToWalk(hit,leftClick.CurCur);
                     break;
+                case "Enemy":
+                    CommandToAttack(hit,leftClick.CurCur);
+                    break;
             }
         }
     }
+
+    
 }
