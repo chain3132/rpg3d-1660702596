@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
 
@@ -7,14 +8,6 @@ public class RightClick : MonoBehaviour
     public static RightClick instance;
     private Camera cam;
     public LayerMask layerMask;
-
-    private LeftClick leftClick;
-
-    private void Awake()
-    {
-        leftClick = GetComponent<LeftClick>();
-    }
-
     private void Start()
     {
         instance = this;
@@ -39,27 +32,25 @@ public class RightClick : MonoBehaviour
         }
     }
 
-    private void CommandToWalk(RaycastHit hit,Characters c)
+    private void CommandToWalk(RaycastHit hit,List<Characters> heroes)
     {
-        if (c != null)
+        foreach (var h in heroes)
         {
-            c.WalkToPosition(hit.point);
+            if (h != null)
+            {
+                h.WalkToPosition(hit.point);
+            }
         }
         CreateVFX(hit.point,VFXManager.instance.DoubleRingMarker);
     }
 
-    private void CommandToAttack(RaycastHit hit, Characters c)
+    private void CommandToAttack(RaycastHit hit, List<Characters> heroes)
     {
-        if (c == null)
-        {
-            return;
-        }
-
         Characters target = hit.collider.GetComponent<Characters>();
         Debug.Log("Attack: " + target);
-        if (target != null)
+        foreach (var h in heroes)
         {
-            c.ToAttackCharacter(target);
+            h.ToAttackCharacter(target);
         }
     }
     private void TryCommand(Vector2 screenPos)
@@ -71,10 +62,10 @@ public class RightClick : MonoBehaviour
             switch (hit.collider.tag)
             {
                 case "Ground":
-                    CommandToWalk(hit,leftClick.CurCur);
+                    CommandToWalk(hit,PartyManager.instance.SelectChars);
                     break;
                 case "Enemy":
-                    CommandToAttack(hit,leftClick.CurCur);
+                    CommandToAttack(hit,PartyManager.instance.SelectChars);
                     break;
             }
         }
