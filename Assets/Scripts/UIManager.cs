@@ -34,14 +34,13 @@ public class UIManager : MonoBehaviour
             if (ai != null)
             {
                 ai.enabled = isOn;
-                Debug.Log(ai.enabled);
             }
         }
     }
 
     public void PauseUpdate(bool isOn)
     {
-        Time.timeScale = togglePauseUnpause.isOn ? 0 : 1;
+        Time.timeScale = isOn ? 0 : 1;
     }
     public void SelectAll()
     {
