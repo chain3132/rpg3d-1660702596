@@ -99,6 +99,7 @@ public class LeftClick : MonoBehaviour
         Debug.Log("Selected Char : "+ hit.collider.gameObject);
         PartyManager.instance.SelectChars.Add(hero);
         hero.ToggleRingSelection(true);
+        UIManager.instance.ShowMagicToggle();
     }
 
     private void TrySelect(Vector2 screenPos)

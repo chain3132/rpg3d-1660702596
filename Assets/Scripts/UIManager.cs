@@ -4,6 +4,13 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    [SerializeField] private Toggle[] toggleMagic;
+    public Toggle[] ToggleMagic
+    {
+        get { return toggleMagic; }
+    }
+
+    [SerializeField] private int curToggleMagicID = -1;
     [SerializeField] private RectTransform selectionBox;
     [SerializeField] private Toggle togglePauseUnpause;
     public RectTransform SelectionBox
@@ -38,6 +45,32 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void ShowMagicToggle()
+    {
+        if (PartyManager.instance.SelectChars.Count <= 0)
+        {
+            return;
+        }
+
+        Characters hero = PartyManager.instance.SelectChars[0];
+        for (int i = 0; i < hero.MagicSkills.Count; i++)
+        {
+            toggleMagic[i].interactable = true;
+            toggleMagic[i].isOn = false;
+            toggleMagic[i].GetComponentInChildren<Text>().text = hero.MagicSkills[i].Name;
+        }
+    }
+
+    public void SelectMagicSkill(int i)
+    {
+        curToggleMagicID = i;
+        PartyManager.instance.HeroSelectMagicSkill(i);
+    }
+
+    public void IsOnCurToggleMagic(bool flag)
+    {
+        toggleMagic[curToggleMagicID].isOn = flag;
+    }
     public void PauseUpdate(bool isOn)
     {
         Time.timeScale = isOn ? 0 : 1;
