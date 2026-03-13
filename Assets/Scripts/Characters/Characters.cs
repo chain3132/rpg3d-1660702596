@@ -150,7 +150,7 @@ public abstract class Characters : MonoBehaviour
     {
         if (vfxManager != null)
         {
-            vfxManager.ShootMagic(curMagicCast.ShootId,transform.position,curCharTarget.transform.position,curMagicCast.ShootTime);
+            vfxManager.ShootMagic(curMagicCast.ShootId,transform.position ,curCharTarget.transform.position,curMagicCast.ShootTime);
         }
 
         yield return new WaitForSeconds(curMagicCast.ShootTime);

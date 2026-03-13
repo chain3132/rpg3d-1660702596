@@ -30,8 +30,14 @@ public class PartyManager : MonoBehaviour
             c.CharInit(VFXManager.instance,UIManager.instance);
         }
         SelectSingleHero(0);
-        members[0].MagicSkills.Add(new Magic(0,"Power Glow",10f,20,3f,1f,2,2));
-        members[1].MagicSkills.Add(new Magic(0,"Fire Ball",10f,35,3f,4f,0,1));
+        members[0].MagicSkills.Add(new Magic(0,"Power Draw",10f,20,3f,1f,2,2));
+        members[0].MagicSkills.Add(new Magic(1,"Fire Ball",10f,35,3f,4f,0,1));
+        members[0].MagicSkills.Add(new Magic(2,"Rainbow Glow",10f,35,3f,4f,0,1));
+        
+        members[1].MagicSkills.Add(new Magic(0,"Power Draw",10f,20,3f,1f,2,2));
+        members[1].MagicSkills.Add(new Magic(1,"Fire Ball",10f,35,3f,4f,0,1));
+        members[1].MagicSkills.Add(new Magic(2,"Rainbow Glow",10f,35,3f,4f,0,1));
+
         UIManager.instance.ShowMagicToggle();
     }
 
