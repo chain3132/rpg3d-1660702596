@@ -6,6 +6,9 @@ public class VFXManager : MonoBehaviour
     [SerializeField] private GameObject doubleRingMarker;
     [SerializeField] private GameObject[] magicVFX;
     [SerializeField] private float spawnYOffset = 1.5f;
+    
+    [SerializeField] private MagicData[] magicData;
+    public MagicData[] MagicData {get{return magicData;}}
     public GameObject[] MagicVFX
     {
         get { return magicVFX; }

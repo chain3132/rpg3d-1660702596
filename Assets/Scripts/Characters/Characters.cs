@@ -78,7 +78,31 @@ public abstract class Characters : MonoBehaviour
         get { return magicSkills; }
         set { magicSkills = value; }
     }
+    [Header("Inventory")]
 
+    [SerializeField]
+    protected Item[] inventoryItems;
+    public Item[] InventoryItems
+    {
+        get { return inventoryItems; }
+        set { inventoryItems = value; }
+    }
+
+    [SerializeField]
+    protected Item mainWeapon;
+    public Item MainWeapon
+    {
+        get { return mainWeapon; }
+        set { mainWeapon = value; }
+    }
+
+    [SerializeField]
+    protected Item shield;
+    public Item Shield
+    {
+        get { return shield; }
+        set { shield = value; }
+    }
     [SerializeField] protected Magic curMagicCast = null;
     public Magic CurMagicCast
     {
@@ -102,10 +126,12 @@ public abstract class Characters : MonoBehaviour
 
     }
 
-    public void CharInit(VFXManager vfxM,UIManager uiM)
+    public void CharInit(VFXManager vfxM, UIManager uiM)
     {
         vfxManager = vfxM;
         uiManager = uiM;
+
+        inventoryItems = new Item[16];
     }
 
     public void ToggleRingSelection(bool flag)
