@@ -23,15 +23,25 @@ public class PartyManager : MonoBehaviour
         instance = this;
     }
 
-    private void Start()
+    void Start()
     {
-        foreach (var c in members)
+        foreach (Characters c in members)
         {
-            c.CharInit(VFXManager.instance,UIManager.instance);
+            c.CharInit(VFXManager.instance, UIManager.instance);
         }
+
         SelectSingleHero(0);
-        members[0].MagicSkills.Add(new Magic(0,"Power Glow",10f,20,3f,1f,2,2));
-        members[1].MagicSkills.Add(new Magic(0,"Fire Ball",10f,35,3f,4f,0,1));
+
+        members[0].MagicSkills.Add(new Magic(VFXManager.instance.MagicData[0]));
+        members[1].MagicSkills.Add(new Magic(VFXManager.instance.MagicData[1]));
+
+        InventoryManage.instance.AddItem(members[0], 0); // Health Potion
+        InventoryManage.instance.AddItem(members[0], 1); // Sword
+
+        InventoryManage.instance.AddItem(members[1], 0); // Health Potion
+        InventoryManage.instance.AddItem(members[1], 1); // Sword
+        InventoryManage.instance.AddItem(members[1], 2); // Shield
+
         UIManager.instance.ShowMagicToggle();
     }
 
