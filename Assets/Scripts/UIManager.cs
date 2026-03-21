@@ -35,6 +35,22 @@ public class UIManager : MonoBehaviour
     {
         instance = this;
     }
+    void Start()
+    {
+        // เรียกใช้งานฟังก์ชันตั้งค่า ID ให้กับทุก Slot เมื่อเริ่มเกม
+        InitSlots();
+    }
+
+    private void InitSlots()
+    {
+        for (int i = 0; i < InventoryManage.MAXSLOT; i++)
+        {
+            // ทำการใส่เลข ID ให้กับ Component InventorySlot ในแต่ละช่อง
+            slots[i].GetComponent<InventorySlot>().ID = i;
+        }
+    }
+
+    
 
     private void Update()
     {
@@ -132,16 +148,22 @@ public class UIManager : MonoBehaviour
         if (PartyManager.instance.SelectChars.Count <= 0)
             return;
 
-        // Show inventory only the single selected hero
+        // Show Inventory only the single selected hero
         Characters hero = PartyManager.instance.SelectChars[0];
 
         // Show items
-        for (int i = 0; i < hero.InventoryItems.Length; i++)
+        for (int i = 0; i < InventoryManage.MAXSLOT; i++)
         {
             if (hero.InventoryItems[i] != null)
             {
+                // สร้างไอเทม UI ขึ้นมาในช่อง Slot ที่กำหนด
                 GameObject itemObj = Instantiate(itemUIPrefab, slots[i].transform);
-                itemObj.GetComponent<Image>().sprite = hero.InventoryItems[i].Icon;
+                ItemDrag itemDrag = itemObj.GetComponent<ItemDrag>();
+
+                // ตั้งค่าข้อมูลไอเทมให้กับ UI ที่สร้างขึ้น
+                itemDrag.Item = hero.InventoryItems[i];
+                itemDrag.IconParent = slots[i].transform;
+                itemDrag.Image.sprite = hero.InventoryItems[i].Icon;
             }
         }
     }
