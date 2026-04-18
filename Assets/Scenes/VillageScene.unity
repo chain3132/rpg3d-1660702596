@@ -2094,6 +2094,7 @@ GameObject:
   - component: {fileID: 317305758}
   - component: {fileID: 317305759}
   - component: {fileID: 317305760}
+  - component: {fileID: 317305761}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2168,6 +2169,7 @@ MonoBehaviour:
   magicData:
   - {fileID: 11400000, guid: 609f7c019da77e14b8594611b3a01c06, type: 2}
   - {fileID: 11400000, guid: 01b768cff611fa148b4638c8237318fb, type: 2}
+  - {fileID: 11400000, guid: 4b9313f944d6ee5439e5c9b8efe4356a, type: 2}
 --- !u!114 &317305759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2196,11 +2198,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e2a662ca42293e43a8535c95de50d01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryManage
-  itemPrefabs: []
+  itemPrefabs:
+  - {fileID: 5299487957247753176, guid: e4b47771508d5f54fb9d6423d52f414b, type: 3}
+  - {fileID: 157152, guid: 03eb254be55316240929244bd19caa02, type: 3}
   itemData:
   - {fileID: 11400000, guid: 676d5e0d75fbabf439f87d9479d4386c, type: 2}
   - {fileID: 11400000, guid: 9b946576ebe549849981ea53aff4177a, type: 2}
   - {fileID: 11400000, guid: af974d0ef47468b4baad421f5d0f8b00, type: 2}
+--- !u!114 &317305761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 317305754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c828a689d638b734d83fb605d81509de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyManager
+  monsters:
+  - {fileID: 1342907252}
 --- !u!1 &328160839
 GameObject:
   m_ObjectHideFlags: 0
@@ -9563,6 +9581,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackAI
   curEnemy: {fileID: 0}
+--- !u!114 &1342907252 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3451049187733154606, guid: 8cd752dc36d412b4bba2efd06775153a, type: 3}
+  m_PrefabInstance: {fileID: 1139257290}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1342907245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6614223f1e1869478944c9f3edbaac8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Enemy
 --- !u!1 &1353364531
 GameObject:
   m_ObjectHideFlags: 0
@@ -13306,7 +13335,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -3.699829, y: 37.3499}
+  m_AnchoredPosition: {x: -3.699707, y: 37.349854}
   m_SizeDelta: {x: -773.2524, y: -256.2657}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1867401478

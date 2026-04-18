@@ -33,6 +33,9 @@ public class PartyManager : MonoBehaviour
         SelectSingleHero(0);
 
         members[0].MagicSkills.Add(new Magic(VFXManager.instance.MagicData[0]));
+        members[0].MagicSkills.Add(new Magic(VFXManager.instance.MagicData[1]));
+        members[0].MagicSkills.Add(new Magic(VFXManager.instance.MagicData[2]));
+
         members[1].MagicSkills.Add(new Magic(VFXManager.instance.MagicData[1]));
 
         InventoryManage.instance.AddItem(members[0], 0); // Health Potion

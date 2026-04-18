@@ -195,7 +195,6 @@ public abstract class Characters : MonoBehaviour
         if (vfxManager != null)
         {
             vfxManager.LoadMagic(this.curMagicCast.LoadId,transform.position,curMagicCast.LoadTime);
-            
         }
 
         yield return new WaitForSeconds(curMagicCast.LoadTime);
