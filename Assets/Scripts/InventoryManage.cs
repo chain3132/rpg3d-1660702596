@@ -87,6 +87,7 @@ public class InventoryManage : MonoBehaviour
         // ตั้งค่าข้อมูลเริ่มต้นให้กับ ItemPick เพื่อให้ผู้เล่นกลับมาเก็บได้
         ItemPick itemPick = itemObj.GetComponent<ItemPick>();
         itemPick.Init(item, instance, PartyManager.instance);
+        itemPick.transform.position += new Vector3(0, 0.5f, 0);
     }
 
     public void SpawnDropInventory(Item[] items, Vector3 pos)
