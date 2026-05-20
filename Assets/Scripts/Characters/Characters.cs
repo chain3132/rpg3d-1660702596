@@ -123,6 +123,7 @@ public abstract class Characters : MonoBehaviour
 
     protected VFXManager vfxManager;
     protected UIManager uiManager;
+    protected InventoryManage invrManager;
 
     private void Awake()
     {
@@ -140,12 +141,12 @@ public abstract class Characters : MonoBehaviour
         }
     }
 
-    public void CharInit(VFXManager vfxM, UIManager uiM)
+    public void CharInit(VFXManager vfxM, UIManager uiM,InventoryManage invM)
     {
         vfxManager = vfxM;
         uiManager = uiM;
-
-        inventoryItems = new Item[16];
+        invrManager = invM;
+        inventoryItems = new Item[InventoryManage.MAXSLOT];
     }
 
     public void ToggleRingSelection(bool flag)
@@ -208,7 +209,6 @@ public abstract class Characters : MonoBehaviour
         if (vfxManager != null)
         {
             vfxManager.LoadMagic(this.curMagicCast.LoadId,transform.position,curMagicCast.LoadTime);
-            
         }
 
         yield return new WaitForSeconds(curMagicCast.LoadTime);
@@ -359,7 +359,7 @@ public abstract class Characters : MonoBehaviour
         navAgent.isStopped = true;
         SetState(CharState.Die);
         anim.SetTrigger("Die");
-
+        invrManager.SpawnDropInventory(inventoryItems,transform.position);
         StartCoroutine(DestroyObject());
     }
 
