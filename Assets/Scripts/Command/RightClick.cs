@@ -53,19 +53,34 @@ public class RightClick : MonoBehaviour
             h.ToAttackCharacter(target);
         }
     }
+
+    private void CommandTalkToNPC(RaycastHit hit, List<Characters> heroes)
+    {
+        Characters npc = hit.collider.GetComponent<Characters>();
+        Debug.Log("Talk to NPC: " + npc);
+
+        if (heroes.Count <= 0)
+            return;
+
+        heroes[0].ToTalkToNPC(npc);
+    }
+
     private void TryCommand(Vector2 screenPos)
     {
         Ray ray = cam.ScreenPointToRay(screenPos);
         RaycastHit hit;
-        if (Physics.Raycast(ray,out hit ,1000,layerMask))
+        if (Physics.Raycast(ray, out hit, 1000, layerMask))
         {
             switch (hit.collider.tag)
             {
                 case "Ground":
-                    CommandToWalk(hit,PartyManager.instance.SelectChars);
+                    CommandToWalk(hit, PartyManager.instance.SelectChars);
                     break;
                 case "Enemy":
-                    CommandToAttack(hit,PartyManager.instance.SelectChars);
+                    CommandToAttack(hit, PartyManager.instance.SelectChars);
+                    break;
+                case "NPC":                     
+                    CommandTalkToNPC(hit, PartyManager.instance.SelectChars);
                     break;
             }
         }

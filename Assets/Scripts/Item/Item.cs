@@ -4,8 +4,9 @@ public enum ItemType
 {
     Consumable,
     Equipment,
-    Weapon,
     Shield,
+    Armor,
+    Weapon,
     Ammo,
     Quest,
     Other

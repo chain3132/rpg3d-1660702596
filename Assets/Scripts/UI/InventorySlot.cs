@@ -46,9 +46,12 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             itemDragB.transform.SetParent(itemDragA.IconParent);
             itemDragB.IconParent = itemDragA.IconParent;
             inventoryManager.SaveItemInBag(slotA.ID, itemDragB.Item);
+
+            // (30.10) ถอด Item B ออกจาก Slot B (ถ้า Slot B เป็น Equipment Slot จะ Unequip ด้วย)
+            inventoryManager.RemoveItemInBag(id);
         }
 
-        // Set Item A on Slot B (วางไอเทม A ลงในช่องใหม่ — ถ้า Slot B คือ Shield Slot จะ Equip ด้วย)
+        // Set Item A on Slot B (วางไอเทม A ลงในช่องใหม่ — ถ้า Slot B คือ Shield/Weapon Slot จะ Equip ด้วย)
         itemDragA.IconParent = transform;
         inventoryManager.SaveItemInBag(id, itemDragA.Item);
     }

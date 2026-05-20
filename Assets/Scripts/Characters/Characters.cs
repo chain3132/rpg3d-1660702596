@@ -13,8 +13,8 @@ public enum CharState
     WalkToMagicCast,
     MagicCast,
     Hit,
-    Die
-    
+    Die,
+    WalkToNPC   // (31.8) สถานะเดินไปคุยกับ NPC
 }
 
 public abstract class Characters : MonoBehaviour
@@ -34,7 +34,7 @@ public abstract class Characters : MonoBehaviour
     {
         get { return curHP; }
     }
-    [SerializeField] protected int maxHP = 10;
+    [SerializeField] protected int maxHP = 100;
     public int MaxHP
     {
         get { return maxHP; }
@@ -124,6 +124,13 @@ public abstract class Characters : MonoBehaviour
     {
         get { return weaponDamageBonus; }
     }
+    // (31.9) รูปโปรไฟล์และชื่อตัวละคร (ใช้แสดงใน Dialogue)
+    [SerializeField] protected Sprite avatarPic;
+    public Sprite AvatarPic { get { return avatarPic; } }
+
+    [SerializeField] protected string charName;
+    public string CharName { get { return charName; } }
+
     [SerializeField] protected Magic curMagicCast = null;
     public Magic CurMagicCast
     {
@@ -170,14 +177,13 @@ public abstract class Characters : MonoBehaviour
         ringSelection.SetActive(flag);
     }
 
-    public void EquipShield(Item newShield, GameObject prefab)
+    public void EquipShield(Item item)
     {
-        UnequipShield();
-        shield = newShield;
-        defensePower = newShield.Power;
-        shieldObj = Instantiate(prefab, shieldHand);
-        shieldObj.transform.localPosition = new Vector3(-8.5f,-4,3f);
-        shieldObj.transform.Rotate(-90f,0,180, Space.Self);
+        shieldObj = Instantiate(invrManager.ItemPrefabs[item.PrefabID], shieldHand);
+        shieldObj.transform.localPosition = new Vector3(-8.5f, -4, 3f);
+        shieldObj.transform.Rotate(-90f, 0, 180, Space.Self);
+        defensePower = item.Power;
+        shield = item;
     }
 
     public void UnequipShield()
@@ -191,14 +197,13 @@ public abstract class Characters : MonoBehaviour
         defensePower = 0;
     }
 
-    public void EquipWeapon(Item newWeapon, GameObject prefab)
+    public void EquipWeapon(Item item)
     {
-        UnequipWeapon();
-        mainWeapon = newWeapon;
-        weaponDamageBonus = newWeapon.Power;
-        weaponObj = Instantiate(prefab, weaponHand);
-        weaponObj.transform.localPosition = new Vector3(-8.5f,-4,3f);
-        weaponObj.transform.Rotate(-90f,0,-180, Space.Self);
+        weaponObj = Instantiate(invrManager.ItemPrefabs[item.PrefabID], weaponHand);
+        weaponObj.transform.localPosition = new Vector3(-8.5f, -4, 3f);
+        weaponObj.transform.Rotate(-90f, 0, -180, Space.Self);
+        weaponDamageBonus = item.Power;
+        mainWeapon = item;
     }
 
     public void UnequipWeapon()
@@ -300,6 +305,36 @@ public abstract class Characters : MonoBehaviour
             MagicCast(curMagicCast);
         }
     }
+    // (31.10) เดินไปคุยกับ NPC
+    public void ToTalkToNPC(Characters npc)
+    {
+        if (curHP <= 0 || state == CharState.Die) return;
+
+        // lock target
+        curCharTarget = npc;
+
+        // start walking to npc
+        navAgent.SetDestination(npc.transform.position);
+        navAgent.isStopped = false;
+
+        SetState(CharState.WalkToNPC);
+    }
+
+    // (32.12) เช็คระยะและเปิด Dialogue เมื่อถึง NPC
+    protected void WalkToNPCUpdate()
+    {
+        float distance = Vector3.Distance(transform.position,
+                                          curCharTarget.transform.position);
+        if (distance <= 2f)
+        {
+            navAgent.isStopped = true;
+            SetState(CharState.Idle);
+
+            Npc npc = curCharTarget.GetComponent<Npc>();
+            uiManager.PrepareDialogueBox(npc);
+        }
+    }
+
     public void ToAttackCharacter(Characters target)
     {
         if (curHP <= 0 || state == CharState.Die)

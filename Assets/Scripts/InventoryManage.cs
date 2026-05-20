@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.TextCore.Text;
+using System.Collections.Generic;
 
 public class InventoryManage : MonoBehaviour
 {
@@ -53,15 +54,14 @@ public class InventoryManage : MonoBehaviour
 
         PartyManager.instance.SelectChars[0].InventoryItems[index] = item;
 
-        if (index == SHIELD_SLOT && item.Type == ItemType.Shield)
+        switch (index)
         {
-            GameObject prefab = itemPrefabs[item.PrefabID];
-            PartyManager.instance.SelectChars[0].EquipShield(item, prefab);
-        }
-        else if (index == WEAPON_SLOT && item.Type == ItemType.Weapon)
-        {
-            GameObject prefab = itemPrefabs[item.PrefabID];
-            PartyManager.instance.SelectChars[0].EquipWeapon(item, prefab);
+            case SHIELD_SLOT:
+                PartyManager.instance.SelectChars[0].EquipShield(item);
+                break;
+            case WEAPON_SLOT:
+                PartyManager.instance.SelectChars[0].EquipWeapon(item);
+                break;
         }
     }
 
@@ -70,12 +70,17 @@ public class InventoryManage : MonoBehaviour
         if (PartyManager.instance.SelectChars.Count == 0)
             return;
 
-        if (index == SHIELD_SLOT)
-            PartyManager.instance.SelectChars[0].UnequipShield();
-        else if (index == WEAPON_SLOT)
-            PartyManager.instance.SelectChars[0].UnequipWeapon();
-
         PartyManager.instance.SelectChars[0].InventoryItems[index] = null;
+
+        switch (index)
+        {
+            case SHIELD_SLOT:
+                PartyManager.instance.SelectChars[0].UnequipShield();
+                break;
+            case WEAPON_SLOT:
+                PartyManager.instance.SelectChars[0].UnequipWeapon();
+                break;
+        }
     }
     private void SpawnDropItem(Item item, Vector3 pos)
     {
@@ -116,6 +121,57 @@ public class InventoryManage : MonoBehaviour
             }
         }
     }
+    // (31.23) เช็คว่า party มีไอเทมสำหรับส่ง Quest หรือไม่ (ค้นทุกคนใน party)
+    public bool CheckPartyForItem(int id)
+    {
+        Item item = new Item(itemData[id]);
+        Debug.Log(item.ItemName);
+
+        List<Characters> party = PartyManager.instance.Members;
+
+        foreach (Characters hero in party)
+        {
+            for (int i = 0; i < hero.InventoryItems.Length; i++)
+            {
+                if (hero.InventoryItems[i] == null)
+                    continue;
+
+                Debug.Log(hero.InventoryItems[i].ItemName);
+
+                if (hero.InventoryItems[i].ID == item.ID)
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    // (33.14) เอาไอเทม Quest ออกจากกระเป๋าของ party
+    public bool RemoveItemFromParty(int id)
+    {
+        Item item = new Item(itemData[id]);
+        Debug.Log($"Finding {item.ItemName}");
+
+        List<Characters> party = PartyManager.instance.Members;
+
+        foreach (Characters hero in party)
+        {
+            for (int i = 0; i < hero.InventoryItems.Length; i++)
+            {
+                if (hero.InventoryItems[i] == null)
+                    continue;
+
+                if (hero.InventoryItems[i].ID == item.ID)
+                {
+                    Debug.Log($"Removing {hero.InventoryItems[i].ItemName}");
+                    hero.InventoryItems[i] = null;
+                    Debug.Log($"Removed {hero.InventoryItems[i]}");
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public void DrinkConsumableItem(Item item, int slotId)
     {
         string s = string.Format("Drink: {0}", item.ItemName);

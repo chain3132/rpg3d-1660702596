@@ -63,7 +63,7 @@ public class ItemDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
                 if (uiManager != null && slotId >= 0)
                 {
                     uiManager.SetCurItemInUse(this, slotId);
-                    uiManager.ToggleItemDialog();
+                    uiManager.ToggleItemDialog(true);
                 }
             }
         }

@@ -11,6 +11,10 @@ public class PartyManager : MonoBehaviour
     {
         get { return members; }
     }
+
+    // (33.7) รายการ Quest ที่รับมาแล้ว
+    [SerializeField] private List<Quest> questList = new List<Quest>();
+    public List<Quest> QuestList { get { return questList; } }
     public List<Characters> SelectChars
     {
         get { return selectChars; }
