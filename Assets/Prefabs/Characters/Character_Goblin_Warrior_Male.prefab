@@ -600,11 +600,47 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   ringSelection: {fileID: 2575070696911255891}
   curHP: 10
+  maxHP: 10
   curCharTarget: {fileID: 0}
+  attackDamage: 3
   attackRange: 2
   attackCoolDown: 2
   attackTimer: 0
+  findingRange: 20
   state: 0
+  magicSkills: []
+  inventoryItems: []
+  mainWeapon:
+    id: 0
+    itemName: 
+    type: 0
+    icon: {fileID: 0}
+    power: 0
+    prefabID: 0
+  shield:
+    id: 0
+    itemName: 
+    type: 0
+    icon: {fileID: 0}
+    power: 0
+    prefabID: 0
+  shieldHand: {fileID: 444796}
+  shieldObj: {fileID: 0}
+  defensePower: 0
+  weaponHand: {fileID: 444796}
+  weaponObj: {fileID: 0}
+  weaponDamageBonus: 0
+  curMagicCast:
+    id: 0
+    name: 
+    icon: {fileID: 0}
+    range: 0
+    power: 0
+    loadTime: 0
+    shootTime: 0
+    loadId: 0
+    shootId: 0
+  isMagicMode: 0
 --- !u!1 &114958
 GameObject:
   m_ObjectHideFlags: 0

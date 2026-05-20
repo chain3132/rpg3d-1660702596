@@ -20,7 +20,9 @@ public class InventoryManage : MonoBehaviour
     }
 
     public static InventoryManage instance;
-    public const int MAXSLOT = 16;
+    public const int MAXSLOT = 18;
+    public const int SHIELD_SLOT = 16;
+    public const int WEAPON_SLOT = 17;
 
     void Awake()
     {
@@ -46,21 +48,33 @@ public class InventoryManage : MonoBehaviour
     }
     public void SaveItemInBag(int index, Item item)
     {
-        // ตรวจสอบว่ามีตัวละครในปาร์ตี้หรือไม่
         if (PartyManager.instance.SelectChars.Count == 0)
             return;
 
-        // บันทึกไอเทมลงในลิสต์ InventoryItems ของตัวละครหลัก (ตัวที่ 0)
         PartyManager.instance.SelectChars[0].InventoryItems[index] = item;
+
+        if (index == SHIELD_SLOT && item.Type == ItemType.Shield)
+        {
+            GameObject prefab = itemPrefabs[item.PrefabID];
+            PartyManager.instance.SelectChars[0].EquipShield(item, prefab);
+        }
+        else if (index == WEAPON_SLOT && item.Type == ItemType.Weapon)
+        {
+            GameObject prefab = itemPrefabs[item.PrefabID];
+            PartyManager.instance.SelectChars[0].EquipWeapon(item, prefab);
+        }
     }
 
     public void RemoveItemInBag(int index)
     {
-        // ตรวจสอบว่ามีตัวละครในปาร์ตี้หรือไม่
         if (PartyManager.instance.SelectChars.Count == 0)
             return;
 
-        // ลบไอเทมออกจากลิสต์ (ตั้งค่าเป็น null)
+        if (index == SHIELD_SLOT)
+            PartyManager.instance.SelectChars[0].UnequipShield();
+        else if (index == WEAPON_SLOT)
+            PartyManager.instance.SelectChars[0].UnequipWeapon();
+
         PartyManager.instance.SelectChars[0].InventoryItems[index] = null;
     }
     private void SpawnDropItem(Item item, Vector3 pos)

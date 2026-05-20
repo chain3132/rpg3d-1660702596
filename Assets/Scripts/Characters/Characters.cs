@@ -108,6 +108,22 @@ public abstract class Characters : MonoBehaviour
         get { return shield; }
         set { shield = value; }
     }
+
+    [SerializeField] protected Transform shieldHand;
+    [SerializeField] protected GameObject shieldObj;
+    [SerializeField] protected int defensePower = 0;
+    public int DefensePower
+    {
+        get { return defensePower; }
+    }
+
+    [SerializeField] protected Transform weaponHand;
+    [SerializeField] protected GameObject weaponObj;
+    [SerializeField] protected int weaponDamageBonus = 0;
+    public int WeaponDamageBonus
+    {
+        get { return weaponDamageBonus; }
+    }
     [SerializeField] protected Magic curMagicCast = null;
     public Magic CurMagicCast
     {
@@ -154,14 +170,57 @@ public abstract class Characters : MonoBehaviour
         ringSelection.SetActive(flag);
     }
 
-    public void ReceiveDamage(int damange)
+    public void EquipShield(Item newShield, GameObject prefab)
+    {
+        UnequipShield();
+        shield = newShield;
+        defensePower = newShield.Power;
+        shieldObj = Instantiate(prefab, shieldHand);
+        shieldObj.transform.localPosition = new Vector3(-8.5f,-4,3f);
+        shieldObj.transform.Rotate(-90f,0,180, Space.Self);
+    }
+
+    public void UnequipShield()
+    {
+        if (shieldObj != null)
+        {
+            Destroy(shieldObj);
+            shieldObj = null;
+        }
+        shield = null;
+        defensePower = 0;
+    }
+
+    public void EquipWeapon(Item newWeapon, GameObject prefab)
+    {
+        UnequipWeapon();
+        mainWeapon = newWeapon;
+        weaponDamageBonus = newWeapon.Power;
+        weaponObj = Instantiate(prefab, weaponHand);
+        weaponObj.transform.localPosition = new Vector3(-8.5f,-4,3f);
+        weaponObj.transform.Rotate(-90f,0,-180, Space.Self);
+    }
+
+    public void UnequipWeapon()
+    {
+        if (weaponObj != null)
+        {
+            Destroy(weaponObj);
+            weaponObj = null;
+        }
+        mainWeapon = null;
+        weaponDamageBonus = 0;
+    }
+
+    public void ReceiveDamage(int damage)
     {
         if (curHP <= 0 || state == CharState.Die)
         {
             return;
         }
 
-        curHP -= damange;
+        int actualDamage = Mathf.Max(0, damage - defensePower);
+        curHP -= actualDamage;
         if (curHP <= 0)
         {
             curHP = 0;
@@ -174,7 +233,7 @@ public abstract class Characters : MonoBehaviour
         Characters target = curCharTarget.GetComponent<Characters>();
         if (target != null)
         {
-            target.ReceiveDamage(attackDamage);
+            target.ReceiveDamage(attackDamage + weaponDamageBonus);
         }
     }
 

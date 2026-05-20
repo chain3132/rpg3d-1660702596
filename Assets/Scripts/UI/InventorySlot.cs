@@ -8,37 +8,47 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     public int ID
     { get { return id; } set { id = value; } }
 
+    // (30.5) ประเภทไอเทมที่ Slot นี้รับได้ (Other = รับทุกประเภท)
+    [SerializeField]
+    private ItemType slotType = ItemType.Other;
+    public ItemType SlotType
+    { get { return slotType; } set { slotType = value; } }
+
     [SerializeField]
     private InventoryManage inventoryManager;
 
     void Start()
     {
-        // เชื่อมต่อกับ Instance ของ InventoryManager เมื่อเริ่มเกม
         inventoryManager = InventoryManage.instance;
     }
+
     public void OnDrop(PointerEventData eventData)
     {
-        // //Get Item A (ไอเทมที่เราลากมา)
+        // Get Item A (ไอเทมที่เราลากมา)
         GameObject objA = eventData.pointerDrag;
         ItemDrag itemDragA = objA.GetComponent<ItemDrag>();
         InventorySlot slotA = itemDragA.IconParent.GetComponent<InventorySlot>();
-    
-        // //Remove Item A from Slot A (เอาข้อมูลออกจากช่องเดิมในกระเป๋า)
+
+        // (30.10) เช็คว่า Slot นี้มีประเภทจำกัดไหม เช่น Shield Slot รับเฉพาะ Shield
+        if (slotType != ItemType.Other && itemDragA.Item.Type != slotType)
+            return;
+
+        // Remove Item A from Slot A (เอาข้อมูลออกจากช่องเดิม — ถ้า Slot A คือ Shield Slot จะ Unequip ด้วย)
         inventoryManager.RemoveItemInBag(slotA.ID);
 
-        // //There is an Item B in Slot B (ถ้าช่องที่เราจะวางมีไอเทม B อยู่แล้ว)
+        // There is an Item B in Slot B (ถ้าช่องที่จะวางมีไอเทม B อยู่แล้ว)
         if (transform.childCount > 0)
         {
             GameObject objB = transform.GetChild(0).gameObject;
             ItemDrag itemDragB = objB.GetComponent<ItemDrag>();
 
-            // //Set Item B on Slot A (ย้ายไอเทม B ไปที่ช่องเดิมของ A ทั้ง UI และข้อมูล)
+            // Set Item B on Slot A
             itemDragB.transform.SetParent(itemDragA.IconParent);
             itemDragB.IconParent = itemDragA.IconParent;
             inventoryManager.SaveItemInBag(slotA.ID, itemDragB.Item);
         }
 
-        // //Set Item A on Slot B (วางไอเทม A ลงในช่องใหม่นี้)
+        // Set Item A on Slot B (วางไอเทม A ลงในช่องใหม่ — ถ้า Slot B คือ Shield Slot จะ Equip ด้วย)
         itemDragA.IconParent = transform;
         inventoryManager.SaveItemInBag(id, itemDragA.Item);
     }

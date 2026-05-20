@@ -3029,7 +3029,48 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hero
   ringSelection: {fileID: 5471620559390929870}
+  curHP: 10
+  maxHP: 10
+  curCharTarget: {fileID: 0}
+  attackDamage: 3
+  attackRange: 2
+  attackCoolDown: 2
+  attackTimer: 0
+  findingRange: 20
   state: 0
+  magicSkills: []
+  inventoryItems: []
+  mainWeapon:
+    id: 0
+    itemName: 
+    type: 0
+    icon: {fileID: 0}
+    power: 0
+    prefabID: 0
+  shield:
+    id: 0
+    itemName: 
+    type: 0
+    icon: {fileID: 0}
+    power: 0
+    prefabID: 0
+  shieldHand: {fileID: 483062}
+  shieldObj: {fileID: 0}
+  defensePower: 0
+  weaponHand: {fileID: 483062}
+  weaponObj: {fileID: 0}
+  weaponDamageBonus: 0
+  curMagicCast:
+    id: 0
+    name: 
+    icon: {fileID: 0}
+    range: 0
+    power: 0
+    loadTime: 0
+    shootTime: 0
+    loadId: 0
+    shootId: 0
+  isMagicMode: 0
 --- !u!114 &7903888176504449655
 MonoBehaviour:
   m_ObjectHideFlags: 0

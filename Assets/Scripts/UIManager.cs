@@ -16,6 +16,8 @@ public class UIManager : MonoBehaviour
     
     [SerializeField] private GameObject blackImage;
     [SerializeField] private GameObject inventoryPanel;
+    [SerializeField] private GameObject grayImage;
+    [SerializeField] private GameObject itemDialog;
     
     [SerializeField]
      private ItemDrag curItemDrag;
@@ -41,8 +43,9 @@ public class UIManager : MonoBehaviour
     }
     void Start()
     {
-        // เรียกใช้งานฟังก์ชันตั้งค่า ID ให้กับทุก Slot เมื่อเริ่มเกม
         InitSlots();
+        if (grayImage != null) grayImage.SetActive(false);
+        if (itemDialog != null) itemDialog.SetActive(false);
     }
 
     private void InitSlots()
@@ -152,23 +155,55 @@ public class UIManager : MonoBehaviour
         if (PartyManager.instance.SelectChars.Count <= 0)
             return;
 
-        // Show Inventory only the single selected hero
         Characters hero = PartyManager.instance.SelectChars[0];
 
-        // Show items
         for (int i = 0; i < InventoryManage.MAXSLOT; i++)
         {
             if (hero.InventoryItems[i] != null)
             {
-                // สร้างไอเทม UI ขึ้นมาในช่อง Slot ที่กำหนด
                 GameObject itemObj = Instantiate(itemUIPrefab, slots[i].transform);
                 ItemDrag itemDrag = itemObj.GetComponent<ItemDrag>();
 
-                // ตั้งค่าข้อมูลไอเทมให้กับ UI ที่สร้างขึ้น
                 itemDrag.Item = hero.InventoryItems[i];
                 itemDrag.IconParent = slots[i].transform;
                 itemDrag.Image.sprite = hero.InventoryItems[i].Icon;
+                itemDrag.UiManager = this; // (29.11) Link UIManager เข้า ItemDrag
             }
         }
+    }
+
+    // (29.9) รับค่าไอเทมที่คลิกขวา และ Slot ที่อยู่
+    public void SetCurItemInUse(ItemDrag drag, int slotId)
+    {
+        curItemDrag = drag;
+        curSlotID = slotId;
+    }
+
+    // (29.9) เปิด/ปิด ItemDialog และ GrayImage — ใช้กับปุ่ม Done
+    public void ToggleItemDialog()
+    {
+        bool active = !itemDialog.activeInHierarchy;
+        if (grayImage != null) grayImage.SetActive(active);
+        if (itemDialog != null) itemDialog.SetActive(active);
+    }
+
+    // (29.9) ลบไอคอนไอเทมออกจาก Inventory หลังดื่มยา
+    public void DeleteItemIcon()
+    {
+        if (curItemDrag != null)
+        {
+            Destroy(curItemDrag.gameObject);
+            curItemDrag = null;
+        }
+    }
+
+    // (29.9) ปุ่ม Use — สั่งดื่มยาแล้วปิด Dialog
+    public void ClickDrinkConsumable()
+    {
+        if (curItemDrag == null) return;
+        InventoryManage.instance.DrinkConsumableItem(curItemDrag.Item, curSlotID);
+        DeleteItemIcon();
+        if (grayImage != null) grayImage.SetActive(false);
+        if (itemDialog != null) itemDialog.SetActive(false);
     }
 }
