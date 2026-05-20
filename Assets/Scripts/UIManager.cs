@@ -18,6 +18,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject inventoryPanel;
     
     [SerializeField]
+     private ItemDrag curItemDrag;
+
+     [SerializeField] private int curSlotID;
+    [SerializeField]
     private GameObject itemUIPrefab;
 
     [SerializeField]

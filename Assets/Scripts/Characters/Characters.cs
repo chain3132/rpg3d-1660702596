@@ -34,6 +34,11 @@ public abstract class Characters : MonoBehaviour
     {
         get { return curHP; }
     }
+    [SerializeField] protected int maxHP = 10;
+    public int MaxHP
+    {
+        get { return maxHP; }
+    }
 
     [SerializeField] protected Characters curCharTarget;
 
@@ -124,6 +129,15 @@ public abstract class Characters : MonoBehaviour
         navAgent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
 
+    }
+
+    public void Recover(int n)
+    {
+        curHP += n;
+        if (curHP > maxHP)
+        {
+            curHP = maxHP;
+        }
     }
 
     public void CharInit(VFXManager vfxM, UIManager uiM)
